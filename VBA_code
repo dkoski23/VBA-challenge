@@ -62,7 +62,7 @@ Worksheets(w).Activate
             opening_value = Cells(i - trading_day_count, 3).Value
             
             'pull closing value from end of year
-            closing_value = Cells(i, 6).Value       
+            closing_value = Cells(i, 6).Value
             
             'print yearly change in summary table
             Range("J" & summary_row).Value = closing_value - opening_value
@@ -75,10 +75,14 @@ Worksheets(w).Activate
                 
             End If
             'print percent change in summary table
-            percent_change = ((closing_value - opening_value) / opening_value)
-            percent_change = Round(percent_change, 2)
-            Range("K" & summary_row).Value = percent_change
-            
+            'and allow for opening price of 0
+            If opening_value = 0 Then
+                Range("K" & summary_row).Value = 0
+            Else
+                percent_change = ((closing_value - opening_value) / opening_value)
+                percent_change = Round(percent_change, 2)
+                Range("K" & summary_row).Value = percent_change
+            End If
             'increment summary row
             summary_row = summary_row + 1
             
@@ -102,4 +106,3 @@ Worksheets(w).Activate
 'Next Worksheet
 Next
 End Sub
-
