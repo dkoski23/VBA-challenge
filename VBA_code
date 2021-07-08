@@ -1,16 +1,20 @@
-'Set up sub, just working within one worksheet to begin
+
 Sub stock_analysis()
+
+'try looping through worksheets
+Dim ws As Integer
+ws = Application.Worksheets.Count
+For w = 1 To ws
+Worksheets(w).Activate
+    
     
     'Set up initial variables
     Dim stock_name As String
-    
-    Dim yearly_change As Double
-    yearly_change = 0
-    
+
     Dim percent_change As Double
     percent_change = 0
     
-    Dim total_volume As Double
+    Dim total_volume As LongLong
     total_volume = 0
     
     Dim summary_row As Integer
@@ -19,18 +23,28 @@ Sub stock_analysis()
     Dim last_row As Long
     last_row = Cells(Rows.Count, 1).End(xlUp).Row
     
-    Dim opening_price As Double
-    opening_price = 0
+    Dim opening_value As Double
+    opening_value = 0
      
     Dim trading_day_count As Integer
     trading_day_count = 0
     
-    Dim closing_price As Double
-    closing_price = 0
-    'MsgBox (last_row)
+    Dim closing_value As Double
+    closing_value = 0
     
-    'begin for loop testing up to row 788
-    For i = 2 To 788
+    
+    'Set up Colums of summary table
+    Cells(1, 9).Value = "Ticker"
+    Cells(1, 10).Value = "Yearly Change"
+    Cells(1, 11).Value = "Percent Change"
+    Cells(1, 12).Value = "Total Stock Volume"
+    Cells(1, 12).ColumnWidth = 16
+    Cells(1, 10).ColumnWidth = 12
+    Cells(1, 11).ColumnWidth = 13
+    Columns("K").NumberFormat = "0.00%"
+    
+    'begin for loop testing all rows
+    For i = 2 To 400
         If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
             
             'change stock name
@@ -47,7 +61,7 @@ Sub stock_analysis()
 
             'pull opening value from beginning of year
             opening_value = Cells(i - trading_day_count, 3).Value
-            'MsgBox (opening_price)
+            'MsgBox (opening_value)
             
             'pull closing value from end of year
             closing_value = Cells(i, 6).Value
@@ -64,7 +78,9 @@ Sub stock_analysis()
                 
             End If
             'print percent change in summary table
-            Range("K" & summary_row).Value = ((closing_value - opening_value) / opening_value)
+            percent_change = ((closing_value - opening_value) / opening_value)
+            percent_change = Round(percent_change, 2)
+            Range("K" & summary_row).Value = percent_change
             
             'increment summary row
             summary_row = summary_row + 1
@@ -84,7 +100,9 @@ Sub stock_analysis()
             'continue totaling stock volume
             total_volume = total_volume + Cells(i, 7).Value
         End If
-            
+    'Next row
     Next i
-
+'Next Worksheet
+Next
 End Sub
+
