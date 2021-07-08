@@ -1,4 +1,3 @@
-
 Sub stock_analysis()
 
 'try looping through worksheets
@@ -44,7 +43,7 @@ Worksheets(w).Activate
     Columns("K").NumberFormat = "0.00%"
     
     'begin for loop testing all rows
-    For i = 2 To 400
+    For i = 2 To last_row
         If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
             
             'change stock name
@@ -61,11 +60,9 @@ Worksheets(w).Activate
 
             'pull opening value from beginning of year
             opening_value = Cells(i - trading_day_count, 3).Value
-            'MsgBox (opening_value)
             
             'pull closing value from end of year
-            closing_value = Cells(i, 6).Value
-            'MsgBox (closing_value)
+            closing_value = Cells(i, 6).Value       
             
             'print yearly change in summary table
             Range("J" & summary_row).Value = closing_value - opening_value
