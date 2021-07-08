@@ -42,6 +42,33 @@ Worksheets(w).Activate
     Cells(1, 11).ColumnWidth = 13
     Columns("K").NumberFormat = "0.00%"
     
+    'Create greatest values table
+    
+    Range("N" & 2).Value = "Greatest Percent Increase"
+    Range("N" & 3).Value = "Greatest Percent Decrease"
+    Range("N" & 4).Value = "Greatest Total Volume"
+    Range("N" & 2).ColumnWidth = 24
+    Range("N" & 3).ColumnWidth = 24
+    Range("N" & 4).ColumnWidth = 24
+    Range("O" & 1).Value = "Ticker"
+    Range("P" & 1).Value = "Value"
+    Range("P2:P3").NumberFormat = "0.00%"
+    Range("P" & 2).Value = Application.WorksheetFunction.Max(Range("K:K"))
+    Range("P" & 3).Value = Application.WorksheetFunction.Min(Range("K:K"))
+    Range("P" & 4).Value = Application.WorksheetFunction.Max(Range("L:L"))
+    
+    For k = 2 To last_row
+        If Cells(k, 11).Value = Range("P2").Value Then
+            Range("O2").Value = Cells(k, 9).Value
+        End If
+        If Cells(k, 11).Value = Range("P3").Value Then
+            Range("O3").Value = Cells(k, 9).Value
+        End If
+        If Cells(k, 12).Value = Range("P4").Value Then
+            Range("O4").Value = Cells(k, 9).Value
+        End If
+    Next k
+    
     'begin for loop testing all rows
     For i = 2 To last_row
         If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
